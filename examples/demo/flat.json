@@ -1,0 +1,152 @@
+{
+  "demo": true,
+  "units": "cm",
+  "frame": "x across (living-room west wall = 0, increasing east), z from the living-room window wall inward (south), y up",
+  "status": {"tape": "tape-measured", "uncertain": "tape-measured, but the reading is in doubt", "guess": "the owner's estimate", "photo": "estimated from a photo against a known size", "sketch": "read off a hand drawing", "assumed": "not given; a typical value"},
+  "dims": {
+    "T": {"v": 12, "status": "assumed", "room": "flat", "label": "Interior wall thickness"},
+    "H": {"v": 260, "status": "tape", "room": "flat", "label": "Ceiling height"},
+    "doorH": {"v": 205, "status": "assumed", "room": "flat", "label": "Door height"},
+    "l_win": {"v": 420, "status": "tape", "room": "living", "label": "Window wall"},
+    "l_far": {"v": 380, "status": "uncertain", "room": "living", "label": "Width at the far wall", "note": "measured once, across the sofa; re-measure"},
+    "l_len": {"v": 520, "status": "tape", "room": "living", "label": "Length along the west wall"},
+    "l_east": {"v": 522, "status": "tape", "room": "living", "label": "East wall, measured along the wall (cross-check)"},
+    "l_winW": {"v": 180, "status": "tape", "room": "living", "label": "Window width (centred)"},
+    "l_sill": {"v": 85, "status": "photo", "room": "living", "label": "Window sill height"},
+    "l_winH": {"v": 150, "status": "photo", "room": "living", "label": "Window height"},
+    "l_rad": {"v": 120, "status": "photo", "room": "living", "label": "Radiator length (centred under window)"},
+    "l_colFrom": {"v": 210, "status": "tape", "room": "living", "label": "West-wall column: from window wall"},
+    "l_colLen": {"v": 45, "status": "tape", "room": "living", "label": "West-wall column: length"},
+    "l_colD": {"v": 15, "status": "guess", "room": "living", "label": "West-wall column: depth"},
+    "l_door": {"v": 85, "status": "tape", "room": "living", "label": "Door width"},
+    "l_doorGap": {"v": 15, "status": "sketch", "room": "living", "label": "Door: gap to the east corner"},
+    "l_sockW": {"v": 380, "status": "tape", "room": "living", "label": "West-wall socket: from window wall"},
+    "l_sockE": {"v": 150, "status": "photo", "room": "living", "label": "East-wall socket: from window wall"},
+    "h_len": {"v": 560, "status": "sketch", "room": "hall", "label": "Hall length, entrance to kitchen door"},
+    "h_w": {"v": 140, "status": "tape", "room": "hall", "label": "Hall width"},
+    "h_ent": {"v": 90, "status": "tape", "room": "hall", "label": "Entrance door width"},
+    "h_entFrom": {"v": 25, "status": "sketch", "room": "hall", "label": "Entrance door: from the south corner"},
+    "k_w": {"v": 240, "status": "photo", "room": "kitchen", "label": "Kitchen width"},
+    "k_len": {"v": 330, "status": "sketch", "room": "kitchen", "label": "Kitchen length"},
+    "k_door": {"v": 85, "status": "tape", "room": "kitchen", "label": "Door width"},
+    "k_winW": {"v": 100, "status": "photo", "room": "kitchen", "label": "Window width (centred)"},
+    "ba_w": {"v": 200, "status": "guess", "room": "bath", "label": "Bathroom width"},
+    "ba_len": {"v": 240, "status": "guess", "room": "bath", "label": "Bathroom length"},
+    "ba_door": {"v": 75, "status": "tape", "room": "bath", "label": "Door width"},
+    "b_w": {"v": 330, "status": "tape", "room": "bed", "label": "Bedroom width (window wall)"},
+    "b_len": {"v": 360, "status": "tape", "room": "bed", "label": "Bedroom length"},
+    "b_winTail": {"v": 95, "status": "tape", "room": "bed", "label": "Window wall: east corner to window"},
+    "b_winW": {"v": 140, "status": "tape", "room": "bed", "label": "Window width"},
+    "b_winHead": {"v": 90, "status": "tape", "room": "bed", "label": "Window wall: window to west corner"},
+    "b_rad": {"v": 100, "status": "photo", "room": "bed", "label": "Radiator length (centred under window)"},
+    "b_door": {"v": 85, "status": "tape", "room": "bed", "label": "Door width"},
+    "b_doorFrom": {"v": 15, "status": "sketch", "room": "bed", "label": "Door: from the west corner"}
+  },
+  "derived": {
+    "l_c1": "l_colFrom + l_colLen",
+    "h_z0": "l_len + T",
+    "h_z1": "l_len + T + h_w",
+    "h_x1": "h_len",
+    "k_x0": "h_len + T",
+    "k_x1": "h_len + T + k_w",
+    "k_z0": "l_len + T",
+    "k_z1": "l_len + T + k_len",
+    "ba_z0": "l_len + T + h_w + T",
+    "ba_z1": "l_len + T + h_w + T + ba_len",
+    "b_x0": "ba_w + T",
+    "b_x1": "ba_w + T + b_w",
+    "b_z0": "l_len + T + h_w + T",
+    "b_z1": "l_len + T + h_w + T + b_len"
+  },
+  "rooms": [
+    {
+      "id": "living",
+      "name": "Living room",
+      "floor": "laminate-wood",
+      "origin": [0, 0],
+      "note": "The east wall runs at an angle: 420 wide at the window, 380 at the far wall.",
+      "walls": [
+        {"id": "window", "name": "Window wall", "from": [0, 0]},
+        {"id": "east", "name": "East wall", "from": ["l_win", 0]},
+        {"id": "far", "name": "Far wall", "from": ["l_far", "l_len"]},
+        {"id": "west", "name": "West wall", "from": [0, "l_len"]}
+      ]
+    },
+    {
+      "id": "hall",
+      "name": "Hall",
+      "floor": "tile",
+      "origin": [0, "h_z0"],
+      "walls": [
+        {"id": "west", "name": "Entrance wall", "from": [0, "h_z1"]},
+        {"id": "north", "name": "Living-room wall", "from": [0, "h_z0"]},
+        {"id": "east", "name": "Kitchen wall", "from": ["h_x1", "h_z0"]},
+        {"id": "south", "name": "Bedroom wall", "from": ["h_x1", "h_z1"]}
+      ]
+    },
+    {
+      "id": "kitchen",
+      "name": "Kitchen",
+      "floor": "tile",
+      "origin": ["k_x0", "k_z0"],
+      "walls": [
+        {"id": "north", "name": "North wall", "from": ["k_x0", "k_z0"]},
+        {"id": "east", "name": "Window wall", "from": ["k_x1", "k_z0"]},
+        {"id": "south", "name": "South wall", "from": ["k_x1", "k_z1"]},
+        {"id": "west", "name": "Hall wall", "from": ["k_x0", "k_z1"]}
+      ]
+    },
+    {
+      "id": "bath",
+      "name": "Bathroom",
+      "floor": "bath",
+      "origin": [0, "ba_z0"],
+      "walls": [
+        {"id": "north", "name": "Hall wall", "from": [0, "ba_z0"]},
+        {"id": "east", "name": "Bedroom wall", "from": ["ba_w", "ba_z0"]},
+        {"id": "south", "name": "South wall", "from": ["ba_w", "ba_z1"]},
+        {"id": "west", "name": "Outer wall", "from": [0, "ba_z1"]}
+      ]
+    },
+    {
+      "id": "bed",
+      "name": "Bedroom",
+      "floor": "laminate-wood",
+      "origin": ["b_x0", "b_z0"],
+      "walls": [
+        {"id": "north", "name": "Door wall", "from": ["b_x0", "b_z0"]},
+        {"id": "east", "name": "East wall", "from": ["b_x1", "b_z0"]},
+        {"id": "south", "name": "Window wall", "from": ["b_x1", "b_z1"]},
+        {"id": "west", "name": "Bathroom wall", "from": ["b_x0", "b_z1"]}
+      ]
+    }
+  ],
+  "openings": [
+    {"id": "living-window", "name": "living-room window", "kind": "window", "room": "living", "wall": "window", "from": "(l_win - l_winW) / 2", "width": "l_winW", "y0": "l_sill", "y1": "l_sill + l_winH", "mullions": 2},
+    {"id": "living-door", "name": "living-room door", "kind": "door", "room": "living", "wall": "far", "from": "l_doorGap", "width": "l_door", "y1": "doorH", "hinge": "start", "swing": "in"},
+    {"id": "entrance-door", "name": "entrance door", "kind": "door", "room": "hall", "wall": "west", "from": "h_entFrom", "width": "h_ent", "y1": "doorH", "hinge": "start", "swing": "in"},
+    {"id": "kitchen-door", "name": "kitchen door", "kind": "door", "room": "kitchen", "wall": "west", "from": "k_len - h_w + 25", "width": "k_door", "y1": "doorH", "hinge": "end", "swing": "in"},
+    {"id": "kitchen-window", "name": "kitchen window", "kind": "window", "room": "kitchen", "wall": "east", "from": "(k_len - k_winW) / 2", "width": "k_winW", "y0": 100, "y1": 220},
+    {"id": "bath-door", "name": "bathroom door", "kind": "door", "room": "bath", "wall": "north", "from": 60, "width": "ba_door", "y1": "doorH", "hinge": "end", "swing": "in"},
+    {"id": "bed-door", "name": "bedroom door", "kind": "door", "room": "bed", "wall": "north", "from": "b_doorFrom", "width": "b_door", "y1": "doorH", "hinge": "start", "swing": "in"},
+    {"id": "bed-window", "name": "bedroom window", "kind": "window", "room": "bed", "wall": "south", "from": "b_winTail", "width": "b_winW", "y0": 90, "y1": 230, "mullions": 2}
+  ],
+  "fixtures": [
+    {"id": "living-column", "kind": "column", "room": "living", "name": "Column", "rect": [0, "l_colFrom", "l_colD", "l_c1"], "h": "H", "mat": "wall", "label": true},
+    {"id": "living-radiator", "kind": "radiator", "room": "living", "name": "Radiator", "rect": ["(l_win - l_rad) / 2", 1, "(l_win + l_rad) / 2", 11], "y0": 15, "h": 60, "mat": "radiator"},
+    {"id": "living-socket-w", "kind": "socket", "room": "living", "name": "Socket + TV", "rect": [0, "l_sockW - 10", 2, "l_sockW + 10"], "y0": 30, "h": 10, "mat": "plate", "label": true},
+    {"id": "living-socket-e", "kind": "socket", "room": "living", "name": "Socket", "rect": ["lerp(l_win, l_far, l_sockE / l_len) - 2", "l_sockE - 5", "lerp(l_win, l_far, l_sockE / l_len)", "l_sockE + 5"], "y0": 30, "h": 10, "mat": "plate", "label": true},
+    {"id": "kitchen-counter", "kind": "counter", "room": "kitchen", "name": "Counter", "rect": ["k_x1 - 60", "k_z0 + 40", "k_x1", "k_z1"], "h": 90, "mat": "cabinet"},
+    {"id": "kitchen-fridge", "kind": "fridge", "room": "kitchen", "name": "Fridge", "rect": ["k_x0", "k_z1 - 65", "k_x0 + 65", "k_z1"], "h": 200, "mat": "cabinet", "label": true},
+    {"id": "kitchen-boiler", "kind": "boiler", "room": "kitchen", "name": "Boiler", "rect": ["k_x1 - 110", "k_z0", "k_x1 - 65", "k_z0 + 35"], "y0": 130, "h": 75, "mat": "white", "label": true},
+    {"id": "bath-shower", "kind": "shower", "room": "bath", "name": "Shower", "rect": [0, "ba_z1 - 90", 90, "ba_z1"], "h": 8, "mat": "cabinet", "label": true},
+    {"id": "bath-toilet", "kind": "toilet", "room": "bath", "name": "WC", "rect": ["ba_w - 40", "ba_z1 - 70", "ba_w", "ba_z1 - 30"], "h": 40, "mat": "cabinet", "label": true},
+    {"id": "bed-radiator", "kind": "radiator", "room": "bed", "name": "Radiator", "rect": ["b_x1 - b_winTail - b_winW / 2 - b_rad / 2", "b_z1 - 11", "b_x1 - b_winTail - b_winW / 2 + b_rad / 2", "b_z1 - 1"], "y0": 15, "h": 60, "mat": "radiator"},
+    {"id": "bed-socket-1", "kind": "socket", "room": "bed", "name": "Socket", "rect": ["b_x1 - 2", "b_z0 + 60", "b_x1", "b_z0 + 69"], "y0": 30, "h": 10, "mat": "plate", "label": true},
+    {"id": "bed-socket-2", "kind": "socket", "room": "bed", "name": "Socket", "rect": ["b_x1 - 2", "b_z0 + 290", "b_x1", "b_z0 + 299"], "y0": 30, "h": 10, "mat": "plate", "label": true}
+  ],
+  "checks": [
+    {"label": "Living east wall: slant from the two widths matches the length along the wall", "room": "living", "a": "hypot(l_win - l_far, l_len)", "b": "l_east"},
+    {"label": "Bedroom window wall: 95 + 140 + 90 = width", "room": "bed", "a": "b_winTail + b_winW + b_winHead", "b": "b_w"}
+  ]
+}

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flat Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="rooms" id="rooms" role="group" aria-label="Room"></div>
+    <div class="sub"><b id="dimtxt"></b> · <b id="areatxt"></b> · <span id="sync">Loading</span></div>
+  </header>
+
+  <div class="main">
+    <div class="stage" id="stage">
+      <canvas id="view"></canvas>
+      <div class="toolbar">
+        <button id="b3d">3D view</button>
+        <button id="btop">Top view</button>
+        <button id="blabels" class="on">Labels</button>
+        <button id="brules" class="on" title="Red: errors. Amber: warnings and passages between 60 and 80 cm.">Rules</button>
+        <button id="brotL" title="Rotate -15° (Q, Shift+Q for 1°)">−15°</button>
+        <button id="brotR" title="Rotate +15° (E, Shift+E for 1°)">+15°</button>
+        <button id="brot" title="Rotate 90° (R)">90°</button>
+        <button id="balign" title="Parallel to the nearest wall, flush if close (A)">Align to wall</button>
+      </div>
+      <div class="errors" id="errors" hidden></div>
+      <form class="sizer" id="sizer" hidden>
+        <div class="lab" id="sizerName"></div>
+        <div class="grid3">
+          <label class="field">Width<input type="number" name="w" min="1" step="1"></label>
+          <label class="field">Depth<input type="number" name="d" min="1" step="1"></label>
+          <label class="field">Height<input type="number" name="h" min="1" step="1"></label>
+        </div>
+        <label class="check-row"><input type="checkbox" name="lock"> Keep proportions</label>
+        <div class="row"><button type="submit">Apply</button><button type="button" id="sizerClose">Close</button></div>
+      </form>
+      <div class="hint">Drag a piece to move it (5 cm snap). In Whole flat, drag it into another room to move it there. Drag empty space to orbit, scroll to zoom. Right-click a piece to resize it. Alt+drag turns a piece to face the cursor. Q/E rotate 15° (with Shift 1°), R 90°, A aligns to the nearest wall, Delete removes.</div>
+    </div>
+
+    <aside>
+      <section class="sec">
+        <div class="lab">Layout file</div>
+        <div class="add"><select id="layoutSel" aria-label="Layout file"></select><button id="saveAs">Save as…</button></div>
+        <div class="note" id="layoutNote"></div>
+      </section>
+      <section class="sec">
+        <div class="lab">Rules <span id="ruleCount" class="count"></span></div>
+        <div id="rules" class="rules"></div>
+      </section>
+      <section class="sec">
+        <div class="lab">Selected</div>
+        <div id="selected" class="note">Click a piece to edit it.</div>
+      </section>
+      <section class="sec">
+        <div class="lab">Furniture</div>
+        <div class="add"><select id="preset" aria-label="Piece to add"></select><button id="badd">Add</button></div>
+        <div class="items" id="items"></div>
+      </section>
+      <section class="sec">
+        <div class="lab">Measurements <span id="flagCount" class="count"></span></div>
+        <div class="note" id="roomNote"></div>
+        <div id="checks"></div>
+        <div id="dims"></div>
+      </section>
+    </aside>
+  </div>
+</div>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

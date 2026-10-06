@@ -1,0 +1,25 @@
+{
+  "name": "demo",
+  "note": "Example layout for the demo flat.",
+  "items": [
+    {"id": "sofa", "kind": "sofa", "name": "Sofa", "room": "living", "x": 150, "z": 470, "rotation": 180, "w": 220, "d": 90, "h": 85, "color": "#7A8B6F"},
+    {"id": "rug", "kind": "rug", "name": "Rug 160×230", "room": "living", "x": 160, "z": 365, "rotation": 90, "w": 160, "d": 230, "h": 1, "color": "#D8CDB8"},
+    {"id": "coffee-table", "kind": "coffee", "name": "Coffee table", "room": "living", "x": 160, "z": 365, "rotation": 0, "w": 110, "d": 55, "h": 40, "color": "#A88B66"},
+    {"id": "armchair", "kind": "armchair", "name": "Armchair", "room": "living", "x": 55, "z": 365, "rotation": 270, "w": 80, "d": 80, "h": 85, "color": "#B07A4F"},
+    {"id": "floor-lamp", "kind": "lamp", "name": "Floor lamp", "room": "living", "x": 20, "z": 490, "rotation": 0, "w": 35, "d": 35, "h": 165, "color": "#3A3530"},
+    {"id": "bookshelf", "kind": "shelf", "name": "Bookshelf", "room": "living", "x": 45, "z": 15, "rotation": 0, "w": 80, "d": 30, "h": 200, "color": "#CFC6B6"},
+    {"id": "desk", "kind": "desk", "name": "Desk", "room": "living", "x": 369.9, "z": 259.8, "rotation": 94.4, "w": 120, "d": 60, "h": 75, "color": "#4A3426", "panels": true},
+    {"id": "desk-chair", "kind": "chair", "name": "Desk chair", "room": "living", "x": 318.1, "z": 255.8, "rotation": 274.4, "w": 55, "d": 55, "h": 110, "color": "#3B3D3F"},
+    {"id": "monitor", "kind": "monitor", "name": "Monitor", "room": "living", "x": 384.9, "z": 261, "rotation": 94.4, "w": 61, "d": 20, "h": 45, "y": 75, "color": "#2A2A2A"},
+    {"id": "dining-table", "kind": "table", "name": "Dining table", "room": "living", "x": 140, "z": 125, "rotation": 0, "w": 120, "d": 75, "h": 75, "color": "#B08D62"},
+    {"id": "chair-1", "kind": "chair", "name": "Chair", "room": "living", "x": 110, "z": 70, "rotation": 0, "w": 43, "d": 50, "h": 90, "color": "#B08D62"},
+    {"id": "chair-2", "kind": "chair", "name": "Chair", "room": "living", "x": 170, "z": 70, "rotation": 0, "w": 43, "d": 50, "h": 90, "color": "#B08D62"},
+    {"id": "chair-3", "kind": "chair", "name": "Chair", "room": "living", "x": 110, "z": 180, "rotation": 180, "w": 43, "d": 50, "h": 90, "color": "#B08D62"},
+    {"id": "chair-4", "kind": "chair", "name": "Chair", "room": "living", "x": 170, "z": 180, "rotation": 180, "w": 43, "d": 50, "h": 90, "color": "#B08D62"},
+    {"id": "bed", "kind": "bed", "name": "Bed 160×200", "room": "bed", "x": 225, "z": 195, "rotation": 90, "w": 160, "d": 210, "h": 100, "color": "#8E9AA6"},
+    {"id": "nightstand-1", "kind": "nightstand", "name": "Nightstand", "room": "bed", "x": 310, "z": 92, "rotation": 90, "w": 45, "d": 40, "h": 55, "color": "#C49A6C", "style": "oak"},
+    {"id": "nightstand-2", "kind": "nightstand", "name": "Nightstand", "room": "bed", "x": 310, "z": 298, "rotation": 90, "w": 45, "d": 40, "h": 55, "color": "#C49A6C", "style": "oak"},
+    {"id": "wardrobe", "kind": "wardrobe", "name": "Wardrobe", "room": "bed", "x": 30, "z": 205, "rotation": 270, "w": 150, "d": 60, "h": 220, "color": "#E3DED3", "style": "oak"},
+    {"id": "dresser", "kind": "dresser", "name": "Dresser", "room": "bed", "x": 180, "z": 23, "rotation": 0, "w": 80, "d": 45, "h": 80, "color": "#F2F1EC"}
+  ]
+}
