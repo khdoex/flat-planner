@@ -8,10 +8,10 @@ Plan furniture in your real flat together with an AI coding agent (Claude Code o
 
 Room planners make it easy to drag a sofa around a perfect rectangle. Real flats are not rectangles. Walls run at an angle, columns stick out, and the tape reading you took over the sofa was 10 cm off. Most of the work is getting from a messy flat to a model you can trust. That is the part this project does with you.
 
-- **Every number says where it came from:** a sketch, a photo, a guess, or a tape measure. The model renders from the first rough sketch, and `npm run survey` tells you which measurement to take next.
+- **Every number says where it came from:** a sketch, a photo, a guess, or a tape measure. The model renders from the first rough sketch, and `flat-planner survey` tells you which measurement to take next.
 - **Redundant measurements catch reading errors.** If the parts of a wall do not add up to the whole, you hear about it before you buy a wardrobe that will not fit.
-- **The agent can see.** `npm run snap` renders the plan to an image, so the agent looks at what you see before it answers.
-- **Rules, not vibes.** `npm run check` reports overlaps, walls, door and drawer swings, radiator and boiler clearance, 60 and 80 cm walkways from the front door, bed access, sockets near nightstands, and window light at the desk.
+- **The agent can see.** `flat-planner snap` renders the plan to an image, so the agent looks at what you see before it answers.
+- **Rules, not vibes.** `flat-planner check` reports overlaps, walls, door and drawer swings, radiator and boiler clearance, 60 and 80 cm walkways from the front door, bed access, sockets near nightstands, and window light at the desk.
 - **Plain files.** The flat and each furniture arrangement are JSON files. Git is the history, and you and the agent edit the same files live: drag in the browser, and the file changes; the agent edits the file, and the browser updates.
 
 ![Living room in 3D](docs/images/living-3d.png)
@@ -27,33 +27,31 @@ The steps are written as agent skills in `.claude/skills/` (`survey`, `layout`, 
 
 ## Install
 
-As a Claude Code plugin (skills only; the first time you use them, the agent sets up a workspace with the tools):
+Make a folder for your flat and start the planner there:
+
+```bash
+mkdir my-flat && cd my-flat
+npx flat-planner init      # copies the demo flat into ./data so you can try things
+npx flat-planner dev       # opens the planner in the browser
+```
+
+Then add the agent skills. In Claude Code:
 
 ```
 /plugin marketplace add khdoex/flat-planner
 /plugin install flat-planner@flat-planner
 ```
 
-Or clone the repo. Claude Code then loads the skills from `.claude/skills/` automatically, and Codex reads `AGENTS.md`.
-
-## Quick start
-
-```bash
-git clone <this repo> && cd flat-planner
-npm install
-npm run dev            # opens the planner on the bundled demo flat
-```
-
-Then start your agent in the folder and say something like *"Let's model my flat. Here is my sketch."* Your own flat goes in `data/`, which git ignores. On the first run, the demo is copied there so you can try the planner. The survey skill sets it aside when you start on your own flat.
+Start your agent in the folder and say something like *"Let's model my flat. Here is my sketch."* For Codex, or to hack on the planner itself, clone this repo: Claude Code then loads the skills from `.claude/skills/`, and Codex reads `AGENTS.md`.
 
 | command | what it does |
 |---|---|
-| `npm run dev` | the planner in the browser, live-synced with the files |
-| `npm run survey` | failing cross-checks, then what to measure next |
-| `npm run check [-- --layout data/layouts/x.json]` | rule violations for a layout |
-| `npm run snap -- --view top\|3d --room <id>\|flat [--crop]` | renders the plan to `snapshots/` (headless Chromium) |
+| `npx flat-planner dev` | the planner in the browser, live-synced with the files |
+| `npx flat-planner survey` | failing cross-checks, then what to measure next |
+| `npx flat-planner check [--layout data/layouts/x.json]` | rule violations for a layout |
+| `npx flat-planner snap --view top\|3d --room <id>\|flat [--crop]` | renders the plan to `snapshots/` |
 
-Snapshots need a Playwright Chromium (`npx playwright install chromium` if it is missing).
+`snap` needs a headless Chromium, installed once with `npx playwright install chromium`. Inside a clone of this repo, use `npm run <command> --` instead of `npx flat-planner <command>`.
 
 In the planner: drag a piece to move it, and drag it into another room in the whole-flat view. Q/E rotate 15° (Shift: 1°), R rotates 90°, A turns a piece parallel to the wall behind it, Alt+drag points a piece at the cursor, and right-click edits its size.
 

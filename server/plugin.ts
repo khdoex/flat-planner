@@ -1,51 +1,44 @@
 // Dev-server side of the shared plan: read/write the plan's JSON files, push file changes to pages.
-// Pages and scripts address files as "data/<file>"; that prefix maps to the real data folder:
-// $PLANNER_DATA if set, else ./data. On first start the dev server copies examples/demo into ./data,
-// so edits never touch the shipped example; read-only scripts fall back to examples/demo directly.
+// Pages and scripts address files as "data/<file>"; shared/paths.ts maps that to the real data folder.
+// On first start the server copies examples/demo into <home>/data, so edits never touch the shipped example.
 import { readFileSync, writeFileSync, renameSync, readdirSync, existsSync, mkdirSync, cpSync } from 'node:fs';
 import { join, resolve, relative, sep, dirname } from 'node:path';
 import type { Plugin } from 'vite';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { formatJson } from '../shared/jsonfmt';
+import { appRoot, dataDirOf, realPath } from '../shared/paths';
 
-const STATE_FILE = '.planner-state.json'; // which layout file the UI has open (gitignored)
+const STATE_FILE = '.planner-state.json'; // which layout file the UI has open (kept out of git)
 
-export function dataDirOf(root: string): string {
-  if (process.env.PLANNER_DATA) return resolve(root, process.env.PLANNER_DATA);
-  return existsSync(join(root, 'data', 'flat.json')) ? resolve(root, 'data') : resolve(root, 'examples', 'demo');
-}
-
-// "data/x.json" -> absolute path inside the data folder, or null if it would leave it.
-export function realPath(root: string, virtual: string | null): string | null {
-  if (!virtual || !virtual.startsWith('data/')) return null;
-  const dir = dataDirOf(root), abs = resolve(dir, virtual.slice(5));
-  return abs.startsWith(dir + sep) && abs.endsWith('.json') ? abs : null;
-}
-
-export function readState(root: string): { layout: string } {
+export function readState(home: string): { layout: string } {
   try {
-    const s = JSON.parse(readFileSync(join(root, STATE_FILE), 'utf8'));
-    if (existsSync(realPath(root, s.layout) ?? '')) return s;
+    const s = JSON.parse(readFileSync(join(home, STATE_FILE), 'utf8'));
+    if (existsSync(realPath(home, s.layout) ?? '')) return s;
   } catch { /* no state yet */ }
   return { layout: 'data/layout.json' };
+}
+
+export function initData(home: string): boolean {
+  if (process.env.PLANNER_DATA || existsSync(join(home, 'data', 'flat.json'))) return false;
+  cpSync(join(appRoot(), 'examples', 'demo'), join(home, 'data'), { recursive: true });
+  return true;
 }
 
 function body(req: IncomingMessage): Promise<string> {
   return new Promise((ok, fail) => { let s = ''; req.on('data', (c) => (s += c)); req.on('end', () => ok(s)); req.on('error', fail); });
 }
 
-export function plannerPlugin(): Plugin {
+export function plannerPlugin(home = process.cwd()): Plugin {
   return {
     name: 'planner-data',
     configureServer(server) {
-      const root = server.config.root;
-      if (!process.env.PLANNER_DATA && !existsSync(join(root, 'data', 'flat.json'))) cpSync(join(root, 'examples', 'demo'), join(root, 'data'), { recursive: true });
-      const dataDir = dataDirOf(root);
+      initData(home);
+      const dataDir = dataDirOf(home);
       const clients = new Set<ServerResponse>();
       const lastWritten = new Map<string, string>(); // our own writes, so the watcher does not echo them back
 
       // Only .json files inside the data folder are readable or writable.
-      const safePath = (p: string | null) => realPath(root, p);
+      const safePath = (p: string | null) => realPath(home, p);
       const virtualOf = (abs: string) => 'data/' + relative(dataDir, abs).split(sep).join('/');
       const send = (res: ServerResponse, code: number, data: unknown) => {
         res.statusCode = code; res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify(data));
@@ -102,10 +95,10 @@ export function plannerPlugin(): Plugin {
             if (req.method === 'POST') {
               const s = JSON.parse(await body(req));
               if (!safePath(s.layout)) return send(res, 400, { error: 'bad layout path' });
-              writeFileSync(join(root, STATE_FILE), formatJson({ layout: s.layout }));
+              writeFileSync(join(home, STATE_FILE), formatJson({ layout: s.layout }));
               return send(res, 200, { ok: true });
             }
-            return send(res, 200, readState(root));
+            return send(res, 200, readState(home));
           }
           send(res, 404, { error: 'unknown endpoint' });
         } catch (e) {

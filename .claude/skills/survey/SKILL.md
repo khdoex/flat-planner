@@ -11,13 +11,7 @@ The user is the bottleneck: they hold the tape and stand in the flat. Ask for on
 
 ## Setup
 
-The commands below run inside a flat-planner workspace: a folder with `scripts/survey.ts` in it. If the current folder is not one (for example, when this skill came from the plugin), ask the user where to put it, then:
-
-```bash
-git clone https://github.com/khdoex/flat-planner.git <folder> && cd <folder> && npm install
-```
-
-Work from that folder from then on. Snapshots also need a Playwright Chromium (`npx playwright install chromium`).
+Commands are `npx flat-planner <command>`, run in the folder that holds the user's plan (the folder with `data/` in it). For a new plan, ask the user where to keep it, then run `npx flat-planner init` there; `npx flat-planner dev` opens the planner in the browser. Inside a git checkout of flat-planner itself, `npm run <command> --` does the same. Snapshots need a headless Chromium, installed once with `npx playwright install chromium`.
 
 ## Stage 1: drawing (the layout of rooms, no numbers needed)
 
@@ -26,7 +20,7 @@ Ask for a hand sketch, as a photo or a scan, or a spoken description. From it, g
 - where every door and window is, and roughly how wide;
 - which walls are clearly not square (slanted walls, steps, columns, alcoves).
 
-Write a first `flat.json` straight away. Use numbers read off the sketch, with `"status": "sketch"`. Choose the frame (see `docs/format.md`) and write it into `frame`. Then run `npm run snap -- --view top --room flat --crop` and **look at the image before replying**. Show the user the snapshot and ask only whether the layout of rooms is right: which room touches which, and where the doors are. Fix it before going on.
+Write a first `flat.json` straight away. Use numbers read off the sketch, with `"status": "sketch"`. Choose the frame (see `docs/format.md`) and write it into `frame`. Then run `npx flat-planner snap --view top --room flat --crop` and **look at the image before replying**. Show the user the snapshot and ask only whether the layout of rooms is right: which room touches which, and where the doors are. Fix it before going on.
 
 ## Stage 2: photos (fittings and facts people forget to measure)
 
@@ -42,7 +36,7 @@ Snapshot again and check the image against the photos.
 
 ## Stage 3: tape (only the numbers that matter)
 
-Run `npm run survey`. It lists the cross-checks that disagree, then every measurement that is not tape-measured: weakest evidence first, and within that, the ones that move the most of the plan. Ask for measurements in that order, a few at a time, grouped by room so the user does not walk back and forth.
+Run `npx flat-planner survey`. It lists the cross-checks that disagree, then every measurement that is not tape-measured: weakest evidence first, and within that, the ones that move the most of the plan. Ask for measurements in that order, a few at a time, grouped by room so the user does not walk back and forth.
 
 How to ask so that one tape reading cannot quietly break the plan:
 - **Measure totals and parts.** If a wall has a window, ask for the full wall and for each part (corner to window, window, window to corner). Add a `checks` entry so that the parts must add up to the total.
@@ -50,7 +44,7 @@ How to ask so that one tape reading cannot quietly break the plan:
 - **Measure at floor level, along the wall,** from corner to corner, ignoring skirting boards. Measure columns and steps as "from the corner, length, depth".
 - **Readings in doubt** (measured over furniture, or once only) get `"status": "uncertain"` and a `note`.
 
-After each batch: update `v` and `status` to `tape`, run `npm run survey` and `npm run snap`, and look at the image. **When a check fails, do not adjust a number to make it pass.** Tell the user which numbers disagree and by how much, mark the suspects `uncertain`, and ask for a re-measure.
+After each batch: update `v` and `status` to `tape`, run `npx flat-planner survey` and `npx flat-planner snap`, and look at the image. **When a check fails, do not adjust a number to make it pass.** Tell the user which numbers disagree and by how much, mark the suspects `uncertain`, and ask for a re-measure.
 
 ## Stage 4: furniture
 
@@ -58,8 +52,8 @@ List the user's furniture with real sizes: width across the front, depth front t
 
 ## Done means
 
-- `npm run survey` shows no failing checks, and only measurements the user has chosen to leave rough;
-- `npm run check` runs without `flat.json problems`;
+- `npx flat-planner survey` shows no failing checks, and only measurements the user has chosen to leave rough;
+- `npx flat-planner check` runs without `flat.json problems`;
 - the user has seen a snapshot of every room and agrees it looks like their home.
 
 ## Privacy

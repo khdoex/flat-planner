@@ -1,6 +1,6 @@
 # Agent guide
 
-This repo is a furniture planner for a real flat. The user's flat lives in `data/` (gitignored). On the first `npm run dev`, the made-up `examples/demo` is copied into `data/` (marked `"demo": true`). Never edit `examples/` for a user.
+This repo is a furniture planner for a real flat. The user's flat lives in `data/` (gitignored). On the first `dev` (or `init`), the made-up `examples/demo` is copied into `data/` (marked `"demo": true`). Never edit `examples/` for a user.
 
 ## Procedures
 
@@ -14,10 +14,13 @@ The file format is in `docs/format.md`.
 
 ## Commands
 
-- `npm run survey`: what to measure next
-- `npm run check [-- --layout data/layouts/x.json]`: rule violations
-- `npm run snap -- --view top|3d --room <id>|flat --crop`: render to `snapshots/`. Open the image and look at it before you describe the plan.
-- `npm run typecheck`
+Run in the folder that holds the plan. In this repo, use `npm run <command> --`; anywhere else, `npx flat-planner <command>`.
+
+- `survey`: what to measure next
+- `check [--layout data/layouts/x.json]`: rule violations
+- `snap --view top|3d --room <id>|flat --crop`: render to `snapshots/`. Open the image and look at it before you describe the plan.
+- `dev`: the planner in the browser
+- `npm run typecheck`, `npm run build` (bundles the CLI into `dist/`)
 
 ## Ground rules
 

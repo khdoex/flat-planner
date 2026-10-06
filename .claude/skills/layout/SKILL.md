@@ -5,27 +5,21 @@ description: Arrange furniture in a surveyed flat and compare arrangements by ha
 
 # Arrange furniture
 
-Furniture lives in `data/layout.json` and in named alternatives in `data/layouts/<name>.json`. The item format is in `docs/format.md`. The user may have the planner open (`npm run dev`) and be dragging things while you work. Their edits are written to disk within about 0.3 s, so **re-read a layout file right before you edit it**, and change only the items you mean to change.
+Furniture lives in `data/layout.json` and in named alternatives in `data/layouts/<name>.json`. The item format is in `docs/format.md`. The user may have the planner open (`npx flat-planner dev`) and be dragging things while you work. Their edits are written to disk within about 0.3 s, so **re-read a layout file right before you edit it**, and change only the items you mean to change.
 
 ## Setup
 
-The commands below run inside a flat-planner workspace: a folder with `scripts/survey.ts` in it. If the current folder is not one (for example, when this skill came from the plugin), ask the user where to put it, then:
-
-```bash
-git clone https://github.com/khdoex/flat-planner.git <folder> && cd <folder> && npm install
-```
-
-Work from that folder from then on. Snapshots also need a Playwright Chromium (`npx playwright install chromium`).
+Commands are `npx flat-planner <command>`, run in the folder that holds the user's plan (the folder with `data/` in it). For a new plan, ask the user where to keep it, then run `npx flat-planner init` there; `npx flat-planner dev` opens the planner in the browser. Inside a git checkout of flat-planner itself, `npm run <command> --` does the same. Snapshots need a headless Chromium, installed once with `npx playwright install chromium`.
 
 ## Loop
 
-1. **Look first.** Run `npm run check` and `npm run snap -- --view top --room <room> --crop`, and read the image.
+1. **Look first.** Run `npx flat-planner check` and `npx flat-planner snap --view top --room <room> --crop`, and read the image.
 2. **Start from what is fixed.** Doors and their swings, windows, radiators, the boiler, sockets, columns. Then place the pieces with the fewest options: bed, wardrobe, desk, sofa. Then the rest.
 3. **Place pieces with their back to a wall.** At `rotation: 0` a piece's back faces `-z`. In rooms with slanted walls, a piece standing against a wall should be parallel to that wall. That is the angle the UI's Align button (key A) produces: the rotation that turns the piece's back to the wall's outward normal. For a piece that only sits beside a wall, parallel to the wall you see most is usually calmer.
-4. **Check after every change** with `npm run check -- --layout data/layouts/<name>.json`. Errors are hard failures. Warnings are trade-offs to explain, not to hide.
+4. **Check after every change** with `npx flat-planner check --layout data/layouts/<name>.json`. Errors are hard failures. Warnings are trade-offs to explain, not to hide.
 5. **Snapshot and look** before telling the user something is better.
 
-## Rules (what `npm run check` tests)
+## Rules (what `npx flat-planner check` tests)
 
 - Pieces overlapping each other. Chairs may tuck under tables and desks. Pieces with `y > 0` sit on others.
 - Pieces running into walls, columns or fitted units.

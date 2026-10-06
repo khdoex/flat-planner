@@ -3,7 +3,9 @@
   "displayName": "Flat planner",
   "version": "0.1.0",
   "description": "Plan furniture in your real flat: a hand drawing, photos and a tape measure become a measured 3D model, and layouts are checked against walkway, door-swing and clearance rules.",
-  "author": { "name": "khdoex" },
+  "author": {
+    "name": "khdoex"
+  },
   "repository": "https://github.com/khdoex/flat-planner",
   "license": "MIT",
   "skills": "./.claude/skills"

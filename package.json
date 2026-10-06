@@ -1,25 +1,56 @@
 {
   "name": "flat-planner",
-  "private": true,
+  "version": "0.1.0",
+  "description": "Plan furniture in your real flat with an AI agent: sketch, photos and tape become a measured 3D model; layouts are checked against walkway, door-swing and clearance rules.",
+  "keywords": [
+    "floor-plan",
+    "furniture",
+    "interior",
+    "three.js",
+    "claude-code",
+    "ai-agent"
+  ],
+  "license": "MIT",
+  "author": "khdoex",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khdoex/flat-planner.git"
+  },
+  "homepage": "https://github.com/khdoex/flat-planner#readme",
   "type": "module",
+  "bin": {
+    "flat-planner": "dist/cli.mjs"
+  },
+  "files": [
+    "dist",
+    "src",
+    "index.html",
+    "examples",
+    "docs/format.md"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "dev": "tsx bin/cli.ts dev",
+    "survey": "tsx bin/cli.ts survey",
+    "check": "tsx bin/cli.ts check",
+    "snap": "tsx bin/cli.ts snap",
     "typecheck": "tsc --noEmit",
-    "snap": "tsx scripts/snap.ts",
-    "check": "tsx scripts/check.ts",
-    "survey": "tsx scripts/survey.ts"
+    "build": "esbuild bin/cli.ts --bundle --platform=node --format=esm --packages=external --banner:js='#!/usr/bin/env node' --outfile=dist/cli.mjs",
+    "prepack": "npm run typecheck && npm run build"
+  },
+  "dependencies": {
+    "playwright": "^1.62.0",
+    "polygon-clipping": "^0.15.7",
+    "three": "^0.186.1",
+    "vite": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "^26.6.4",
     "@types/three": "^0.186.0",
-    "playwright": "^1.62.0",
+    "esbuild": "^0.28.2",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2",
-    "vite": "^8.3.2"
-  },
-  "dependencies": {
-    "polygon-clipping": "^0.15.7",
-    "three": "^0.186.1"
+    "typescript": "^7.0.2"
   }
 }
