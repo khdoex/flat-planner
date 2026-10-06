@@ -5,7 +5,7 @@ description: Turn a real flat into data/flat.json, step by step - hand drawing f
 
 # Survey a flat
 
-The goal is a `data/flat.json` that is honest about what is known. It should always render, even when half the numbers are rough, and it should always be clear which number to measure next. Read `docs/format.md` before writing the file. If `data/flat.json` has `"demo": true`, it is the copy of the bundled example: rename `data/` to `data-demo/` (keep it, so the user can still look at it), and start a new `data/` folder.
+The goal is a `data/flat.json` that is honest about what is known. It should always render, even when half the numbers are rough, and it should always be clear which number to measure next. Read `format.md` in this skill's folder before writing the file. If `data/flat.json` has `"demo": true`, it is the copy of the bundled example: rename `data/` to `data-demo/` (keep it, so the user can still look at it), and start a new `data/` folder.
 
 The user is the bottleneck: they hold the tape and stand in the flat. Ask for one thing at a time and make every request count. Never invent a fact about their home. If a number is needed and nobody gave it, use a typical value with `"status": "assumed"`, and say so.
 
@@ -20,7 +20,7 @@ Ask for a hand sketch, as a photo or a scan, or a spoken description. From it, g
 - where every door and window is, and roughly how wide;
 - which walls are clearly not square (slanted walls, steps, columns, alcoves).
 
-Write a first `flat.json` straight away. Use numbers read off the sketch, with `"status": "sketch"`. Choose the frame (see `docs/format.md`) and write it into `frame`. Then run `npx flat-planner snap --view top --room flat --crop` and **look at the image before replying**. Show the user the snapshot and ask only whether the layout of rooms is right: which room touches which, and where the doors are. Fix it before going on.
+Write a first `flat.json` straight away. Use numbers read off the sketch, with `"status": "sketch"`. Choose the frame (see `format.md`) and write it into `frame`. Then run `npx flat-planner snap --view top --room flat --crop` and **look at the image before replying**. Show the user the snapshot and ask only whether the layout of rooms is right: which room touches which, and where the doors are. Fix it before going on.
 
 ## Stage 2: photos (fittings and facts people forget to measure)
 
@@ -40,7 +40,7 @@ Run `npx flat-planner survey`. It lists the cross-checks that disagree, then eve
 
 How to ask so that one tape reading cannot quietly break the plan:
 - **Measure totals and parts.** If a wall has a window, ask for the full wall and for each part (corner to window, window, window to corner). Add a `checks` entry so that the parts must add up to the total.
-- **Rooms that are not rectangular need more than four sides.** Four side lengths do not fix a shape. Ask for one diagonal, or a width at both ends, and add a check. Use `lerp` for a slanted wall and `circX`/`circZ` for a free corner (see `docs/format.md`).
+- **Rooms that are not rectangular need more than four sides.** Four side lengths do not fix a shape. Ask for one diagonal, or a width at both ends, and add a check. Use `lerp` for a slanted wall and `circX`/`circZ` for a free corner (see `format.md`).
 - **Measure at floor level, along the wall,** from corner to corner, ignoring skirting boards. Measure columns and steps as "from the corner, length, depth".
 - **Readings in doubt** (measured over furniture, or once only) get `"status": "uncertain"` and a `note`.
 

@@ -57,7 +57,7 @@ In the planner: drag a piece to move it, and drag it into another room in the wh
 
 ## Files
 
-See [docs/format.md](docs/format.md). In short, `flat.json` holds the measurements (each with a status), rooms as polygons written as formulas over those measurements, doors and windows, fixed fittings, and cross-checks. Layout files hold furniture with room-relative positions.
+See [format.md](.claude/skills/survey/format.md). In short, `flat.json` holds the measurements (each with a status), rooms as polygons written as formulas over those measurements, doors and windows, fixed fittings, and cross-checks. Layout files hold furniture with room-relative positions.
 
 ## Privacy
 

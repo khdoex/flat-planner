@@ -22,7 +22,7 @@ const HELP = `flat-planner <command>   (run it in the folder that holds your pla
   snap --view top|3d --room <id>|flat [--layout ...] [--out file.png] [--crop]
                              render the plan to snapshots/ (run setup once first)
 
-Your plan lives in ./data (or $PLANNER_DATA). File format: https://github.com/khdoex/flat-planner/blob/main/docs/format.md`;
+Your plan lives in ./data (or $PLANNER_DATA). File format: https://github.com/khdoex/flat-planner/blob/main/.claude/skills/survey/format.md`;
 
 const [cmd, ...args] = process.argv.slice(2), home = process.cwd();
 switch (cmd) {

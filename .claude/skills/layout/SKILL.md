@@ -5,7 +5,7 @@ description: Arrange furniture in a surveyed flat and compare arrangements by ha
 
 # Arrange furniture
 
-Furniture lives in `data/layout.json` and in named alternatives in `data/layouts/<name>.json`. The item format is in `docs/format.md`. The user may have the planner open (`npx flat-planner dev`) and be dragging things while you work. Their edits are written to disk within about 0.3 s, so **re-read a layout file right before you edit it**, and change only the items you mean to change.
+Furniture lives in `data/layout.json` and in named alternatives in `data/layouts/<name>.json`. The item format is in `format.md` in the survey skill's folder (`../survey/format.md`). The user may have the planner open (`npx flat-planner dev`) and be dragging things while you work. Their edits are written to disk within about 0.3 s, so **re-read a layout file right before you edit it**, and change only the items you mean to change.
 
 ## Setup
 

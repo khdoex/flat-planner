@@ -10,7 +10,7 @@ Follow these files as step-by-step procedures (Claude Code loads them as skills;
 - `.claude/skills/layout/SKILL.md`: arranging furniture and comparing alternatives against the rules
 - `.claude/skills/present/SKILL.md`: room-by-room images and comparisons
 
-The file format is in `docs/format.md`.
+The file format is in `.claude/skills/survey/format.md`.
 
 ## Commands
 
