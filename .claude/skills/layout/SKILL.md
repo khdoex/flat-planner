@@ -9,7 +9,7 @@ Furniture lives in `data/layout.json` and in named alternatives in `data/layouts
 
 ## Setup
 
-Commands are `npx flat-planner <command>`, run in the folder that holds the user's plan (the folder with `data/` in it). For a new plan, ask the user where to keep it, then run `npx flat-planner init` there; `npx flat-planner dev` opens the planner in the browser. Inside a git checkout of flat-planner itself, `npm run <command> --` does the same. Snapshots need a headless Chromium, installed once with `npx playwright install chromium`.
+Commands are `npx flat-planner <command>`, run in the folder that holds the user's plan (the folder with `data/` in it). For a new plan, ask the user where to keep it, then run `npx flat-planner init` there; `npx flat-planner dev` opens the planner in the browser. Inside a git checkout of flat-planner itself, `npm run <command> --` does the same. Snapshots need a headless Chromium, installed once with `npx flat-planner setup`.
 
 ## Loop
 
@@ -30,6 +30,10 @@ Commands are `npx flat-planner <command>`, run in the folder that holds the user
 - Overlaps thinner than 0.5 cm are ignored, as below tape precision.
 
 The rules measure clearances, not taste. Say which is which when you recommend something.
+
+## Optimiser
+
+`npx flat-planner optimise --room <id>` searches arrangements of one room and writes the best 3 to `data/layouts/opt-<room>-<n>.json`, each only if it beats the current layout. It moves things that belong together as one: raised pieces with what they stand on, chairs with their table or desk, a rug with what stands on it. Pin pieces with `--keep id,id`. The score is errors × 1000 + warnings × 100 + soft costs: about 8 per cm a bed's headboard is off the wall, 3 per cm for other backs, and 3 per cm a nightstand is away from the bed head. **Always snapshot and look at a candidate before recommending it.** A rule-clean layout can still be one nobody would live with; if so, say so, and say which rule trade-off pushed it there.
 
 ## Alternatives
 

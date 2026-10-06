@@ -1,6 +1,6 @@
 {
   "name": "flat-planner",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Plan furniture in your real flat with an AI agent: sketch, photos and tape become a measured 3D model; layouts are checked against walkway, door-swing and clearance rules.",
   "keywords": [
     "floor-plan",
@@ -38,7 +38,8 @@
     "snap": "tsx bin/cli.ts snap",
     "typecheck": "tsc --noEmit",
     "build": "esbuild bin/cli.ts --bundle --platform=node --format=esm --packages=external --banner:js='#!/usr/bin/env node' --outfile=dist/cli.mjs",
-    "prepack": "npm run typecheck && npm run build"
+    "prepack": "npm run typecheck && npm run build",
+    "optimise": "tsx bin/cli.ts optimise"
   },
   "dependencies": {
     "playwright": "^1.62.0",

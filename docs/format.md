@@ -94,7 +94,8 @@ Fixed things that furniture must respect. Each is a prism with a `rect: [x0, z0,
 | `boiler` (also `kombi`) | keep 60 cm clear in front |
 | `socket` | nightstands should be within 150 cm of one |
 | `column`, `builtin`, `counter`, `fridge`, `shower`, `toilet`, anything else standing below 50 cm | furniture may not overlap it |
-| `switch`, `glass`, anything with `y0` of 50 or more | drawn only |
+| `switch` | no piece taller than the switch within 30 cm in front |
+| `glass`, anything with `y0` of 50 or more | drawn only |
 
 `mat` is one of `wall`, `radiator`, `plate` (sockets), `cabinet`, `metal`, `glass`, `white`. Set `"label": true` to show `name` in room views.
 

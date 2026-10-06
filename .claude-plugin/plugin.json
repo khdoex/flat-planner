@@ -1,7 +1,7 @@
 {
   "name": "flat-planner",
   "displayName": "Flat planner",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Plan furniture in your real flat: a hand drawing, photos and a tape measure become a measured 3D model, and layouts are checked against walkway, door-swing and clearance rules.",
   "author": {
     "name": "khdoex"

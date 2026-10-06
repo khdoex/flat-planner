@@ -21,7 +21,7 @@ Room planners make it easy to drag a sofa around a perfect rectangle. Real flats
 1. **Drawing.** Show the agent a hand sketch. It builds the layout of rooms and doors, with every number marked `sketch`.
 2. **Photos.** Photos of each room add radiators, sockets, the boiler, columns and door swings, with sizes estimated against known objects and marked `photo`.
 3. **Tape.** The agent asks only for the measurements that matter, in order, with cross-checks. Values become `tape`.
-4. **Furniture.** Your pieces, with real sizes, in a layout file. The agent arranges, checks and compares alternatives, and shows you room-by-room images.
+4. **Furniture.** Your pieces, with real sizes, in a layout file. The agent arranges, checks and compares alternatives, and shows you room-by-room images. `optimise` searches a room for arrangements that break fewer rules, keeps backs against walls and nightstands beside the bed, and moves things that belong together as one: a monitor with its desk, chairs with their table.
 
 The steps are written as agent skills in `.claude/skills/` (`survey`, `layout`, `present`). Claude Code loads them automatically. Codex reads `AGENTS.md`, which points to the same files.
 
@@ -50,8 +50,8 @@ Start your agent in the folder and say something like *"Let's model my flat. Her
 | `npx flat-planner survey` | failing cross-checks, then what to measure next |
 | `npx flat-planner check [--layout data/layouts/x.json]` | rule violations for a layout |
 | `npx flat-planner snap --view top\|3d --room <id>\|flat [--crop]` | renders the plan to `snapshots/` |
-
-`snap` needs a headless Chromium, installed once with `npx playwright install chromium`. Inside a clone of this repo, use `npm run <command> --` instead of `npx flat-planner <command>`.
+| `npx flat-planner optimise --room <id>` | searches arrangements of one room; the best 3 go to `data/layouts/opt-<room>-<n>.json` |
+| `npx flat-planner setup` | downloads the headless Chromium that `snap` needs (once) | Inside a clone of this repo, use `npm run <command> --` instead of `npx flat-planner <command>`.
 
 In the planner: drag a piece to move it, and drag it into another room in the whole-flat view. Q/E rotate 15° (Shift: 1°), R rotates 90°, A turns a piece parallel to the wall behind it, Alt+drag points a piece at the cursor, and right-click edits its size.
 
@@ -65,7 +65,7 @@ A floor plan is personal data. `data/` and `snapshots/` are gitignored. Images f
 
 ## Status
 
-Working: survey, live sync, 3D and top views, rules, alignment to slanted walls. Next: an optimiser that searches arrangements against the rules. See [docs/ROADMAP.md](docs/ROADMAP.md).
+Working: survey, live sync, 3D and top views, rules, alignment to slanted walls, and an optimiser that searches arrangements of a room against the rules. See [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## License
 

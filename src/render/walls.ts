@@ -1,6 +1,6 @@
 // Wall solids as 2D footprints. Each wall gets a band of thickness T outside its room.
 // Bands minus all room floors give the wall material; walls shared by two rooms are drawn once.
-import pc from 'polygon-clipping';
+import * as pc from '../geometry/clip';
 import type { MultiPolygon, Polygon } from 'polygon-clipping';
 import type { Flat, Opening, Room, V2, Wall } from '../geometry/types';
 import { shapeArea } from '../geometry/poly';

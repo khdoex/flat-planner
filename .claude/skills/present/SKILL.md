@@ -7,7 +7,7 @@ description: Produce room-by-room images and a short comparison of layout altern
 
 ## Setup
 
-Commands are `npx flat-planner <command>`, run in the folder that holds the user's plan (the folder with `data/` in it). For a new plan, ask the user where to keep it, then run `npx flat-planner init` there; `npx flat-planner dev` opens the planner in the browser. Inside a git checkout of flat-planner itself, `npm run <command> --` does the same. Snapshots need a headless Chromium, installed once with `npx playwright install chromium`.
+Commands are `npx flat-planner <command>`, run in the folder that holds the user's plan (the folder with `data/` in it). For a new plan, ask the user where to keep it, then run `npx flat-planner init` there; `npx flat-planner dev` opens the planner in the browser. Inside a git checkout of flat-planner itself, `npm run <command> --` does the same. Snapshots need a headless Chromium, installed once with `npx flat-planner setup`.
 
 ## Images
 

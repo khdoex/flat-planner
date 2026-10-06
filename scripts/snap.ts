@@ -24,7 +24,7 @@ export async function snap(args: string[], home: string) {
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] }).catch(async (e) => {
     await server.close();
     if (!String(e).includes("Executable doesn't exist")) throw e;
-    console.error('flat-planner snap needs a headless Chromium. Install it once with:\n  npx playwright install chromium');
+    console.error('flat-planner snap needs a headless Chromium. Install it once with:\n  npx flat-planner setup');
     process.exit(1);
   });
   try {

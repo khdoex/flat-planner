@@ -6,8 +6,10 @@
 - Rules: overlaps, walls, door and drawer swings, radiator and boiler clearance, walkways at 60 and 80 cm, bed access, sockets, desk daylight
 - Skills: survey, layout, present; `npm run survey`
 
+- Optimiser: simulated annealing per room over the rule score, with grouped pieces and wall-aligned moves
+
 ## Next
-1. **Optimiser.** `npm run optimise -- --room <id>`: search positions and rotations against a score built from the rules, and write the top 3 candidates to `data/layouts/`.
+1. **More varied candidates.** Today two candidates may differ by one piece moved 40 cm; require a different place for a large piece.
 2. **Config, not code.** Move rule limits and furniture kinds to a file the user can edit.
 3. **Tests.** Unit tests for the geometry and the rules, run on `examples/demo`.
 4. **Photos in the plan.** A product photo as the texture of a rug or a piece of furniture.

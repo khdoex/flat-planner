@@ -1,5 +1,5 @@
 // Layout rules. Pure functions of (flat, items), shared by the UI, `npm run check` and the optimiser.
-import pc from 'polygon-clipping';
+import * as pc from '../geometry/clip';
 import type { MultiPolygon, Polygon } from 'polygon-clipping';
 import type { Fixture, Flat, Item, Opening, Room, V2 } from '../geometry/types';
 import { footprint, shapeArea, bbox } from '../geometry/poly';
@@ -15,7 +15,7 @@ export interface RuleResult { violations: Violation[]; passed: Record<string, nu
 
 export const LIMITS = {
   walkWarn: 60, walkGood: 80, // walkway widths, cm
-  radiatorClear: 20, boilerClear: 60, // in front of radiators and wall boilers
+  radiatorClear: 20, boilerClear: 60, switchClear: 30, // in front of radiators, wall boilers and light switches
   socketReach: 150, // cm from nightstand to socket: a typical lamp or charger cable
   accessDepth: 60, // depth of the zone a person stands in to use a piece
   cell: 2.5,
@@ -71,7 +71,8 @@ function polyDist(p: V2[], q: V2[]): number {
   return d;
 }
 
-export function checkLayout(flat: Flat, items: Item[]): RuleResult {
+// cell: walkway grid size in cm (the optimiser searches on a coarser grid, then re-checks at the default)
+export function checkLayout(flat: Flat, items: Item[], cell: number = LIMITS.cell): RuleResult {
   const t0 = performance.now();
   const V: Violation[] = [], passed: Record<string, number> = {};
   const ok = (rule: string) => { passed[rule] = (passed[rule] ?? 0) + 1; };
@@ -85,6 +86,8 @@ export function checkLayout(flat: Flat, items: Item[]): RuleResult {
   for (let a = 0; a < placed.length; a++) for (let b = a + 1; b < placed.length; b++) {
     const A = placed[a], B = placed[b];
     if (A.it.h <= 2 || B.it.h <= 2) continue;
+    const ba = bbox(A.fp), bb = bbox(B.fp);
+    if (ba.x1 <= bb.x0 || bb.x1 <= ba.x0 || ba.z1 <= bb.z0 || bb.z1 <= ba.z0) { ok('overlap'); continue; }
     const ya = A.it.y ?? 0, yb = B.it.y ?? 0;
     if (ya >= yb + B.it.h || yb >= ya + A.it.h) continue;
     if ((CHAIRS.has(A.it.kind) && TABLES.has(B.it.kind)) || (CHAIRS.has(B.it.kind) && TABLES.has(A.it.kind))) continue;
@@ -128,14 +131,16 @@ export function checkLayout(flat: Flat, items: Item[]): RuleResult {
     if (thin(intoWall) <= TOL && !hits.length) ok('opening');
   }
 
-  // 4. radiators and wall boilers need clear space in front
+  // 4. radiators, wall boilers and light switches need clear space in front
   for (const f of flat.fixtures) {
-    const depth = f.kind === 'radiator' ? LIMITS.radiatorClear : f.kind === 'boiler' || f.kind === 'kombi' ? LIMITS.boilerClear : 0;
+    const depth = f.kind === 'radiator' ? LIMITS.radiatorClear : f.kind === 'boiler' || f.kind === 'kombi' ? LIMITS.boilerClear : f.kind === 'switch' ? LIMITS.switchClear : 0;
     const room = roomOf.get(f.room);
     if (!depth || !room) continue;
     const zone = stripInFront(f.poly, room, depth);
-    const hits = placed.filter((P) => blocks(P.it) && thin(pc.intersection(poly(zone), poly(P.fp))) > TOL);
-    for (const P of hits) V.push({ rule: 'clearance', severity: 'warn', room: f.room, items: [P.it.id], msg: `${name(P.it)} is within ${depth} cm in front of the ${f.name.toLowerCase()}`, zones: [{ shape: pc.union(poly(zone)), tone: 'amber' }] });
+    // a light switch is only blocked by pieces that reach up to it
+    const tall = (P: Placed) => f.kind !== 'switch' || (P.it.y ?? 0) + P.it.h > f.y0 - 10;
+    const hits = placed.filter((P) => blocks(P.it) && tall(P) && thin(pc.intersection(poly(zone), poly(P.fp))) > TOL);
+    for (const P of hits) V.push({ rule: 'clearance', severity: 'warn', room: f.room, items: [P.it.id], msg: f.kind === 'switch' ? `${name(P.it)} blocks the ${f.name.toLowerCase()}` : `${name(P.it)} is within ${depth} cm in front of the ${f.name.toLowerCase()}`, zones: [{ shape: pc.union(poly(zone)), tone: 'amber' }] });
     if (!hits.length) ok('clearance');
   }
 
@@ -163,7 +168,7 @@ export function checkLayout(flat: Flat, items: Item[]): RuleResult {
   }
 
   // 7. walkways: flood from the entrance at 60 and 80 cm body width
-  const walk = walkways(flat, placed, obstacles, V, ok);
+  const walk = walkways(flat, placed, obstacles, V, ok, cell);
   return { violations: V, passed, walk, ms: performance.now() - t0 };
 }
 
@@ -171,7 +176,7 @@ function openingRect(o: Opening, T: number): V2[] { // the doorway through the w
   const n = o.wall.n;
   return [o.a, o.b, [o.b[0] + n[0] * T, o.b[1] + n[1] * T], [o.a[0] + n[0] * T, o.a[1] + n[1] * T]];
 }
-function otherRoom(flat: Flat, o: Opening): string | undefined {
+export function otherRoom(flat: Flat, o: Opening): string | undefined {
   const m: V2 = [(o.a[0] + o.b[0]) / 2 + o.wall.n[0] * (flat.T + 5), (o.a[1] + o.b[1]) / 2 + o.wall.n[1] * (flat.T + 5)];
   return flat.rooms.find((r) => insidePoly(m, r.poly))?.id;
 }
@@ -184,9 +189,9 @@ const doorName = (o: Opening) => o.name ?? o.id.replace(/-/g, ' ');
 
 type Placed = { it: Item; room: Room; fp: V2[] };
 
-function walkways(flat: Flat, placed: Placed[], obstacles: Fixture[], V: Violation[], ok: (r: string) => void): WalkMap {
+function walkways(flat: Flat, placed: Placed[], obstacles: Fixture[], V: Violation[], ok: (r: string) => void, cell: number): WalkMap {
   const all = flat.rooms.flatMap((r) => r.poly), b = bbox(all), pad = flat.T + 110;
-  const g = new Grid(b.x0 - pad, b.z0 - pad, b.x1 + pad, b.z1 + pad, LIMITS.cell);
+  const g = new Grid(b.x0 - pad, b.z0 - pad, b.x1 + pad, b.z1 + pad, cell);
   const room = new Uint8Array(g.size), portal = new Uint8Array(g.size), structural = new Uint8Array(g.size), free = new Uint8Array(g.size);
   flat.rooms.forEach((r, i) => g.fill(r.poly, (k) => { room[k] = i + 1; structural[k] = 1; }));
   const doors = flat.openings.filter((o) => o.kind === 'door');
