@@ -5,6 +5,16 @@ description: Produce room-by-room images and a short comparison of layout altern
 
 # Present a plan
 
+## Setup
+
+The commands below run inside a flat-planner workspace: a folder with `scripts/survey.ts` in it. If the current folder is not one (for example, when this skill came from the plugin), ask the user where to put it, then:
+
+```bash
+git clone https://github.com/khdoex/flat-planner.git <folder> && cd <folder> && npm install
+```
+
+Work from that folder from then on. Snapshots also need a Playwright Chromium (`npx playwright install chromium`).
+
 ## Images
 
 For each room that has furniture, take a top view and a 3D view. Take a top view of the whole flat as well:

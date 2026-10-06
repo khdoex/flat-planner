@@ -1,0 +1,14 @@
+{
+  "name": "flat-planner",
+  "description": "Agent skills for planning furniture in a real flat: survey, layout and present.",
+  "owner": {
+    "name": "khdoex"
+  },
+  "plugins": [
+    {
+      "name": "flat-planner",
+      "source": "./",
+      "description": "Survey a real flat into a measured model, then arrange and check furniture with an AI agent."
+    }
+  ]
+}

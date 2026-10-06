@@ -9,6 +9,16 @@ The goal is a `data/flat.json` that is honest about what is known. It should alw
 
 The user is the bottleneck: they hold the tape and stand in the flat. Ask for one thing at a time and make every request count. Never invent a fact about their home. If a number is needed and nobody gave it, use a typical value with `"status": "assumed"`, and say so.
 
+## Setup
+
+The commands below run inside a flat-planner workspace: a folder with `scripts/survey.ts` in it. If the current folder is not one (for example, when this skill came from the plugin), ask the user where to put it, then:
+
+```bash
+git clone https://github.com/khdoex/flat-planner.git <folder> && cd <folder> && npm install
+```
+
+Work from that folder from then on. Snapshots also need a Playwright Chromium (`npx playwright install chromium`).
+
 ## Stage 1: drawing (the layout of rooms, no numbers needed)
 
 Ask for a hand sketch, as a photo or a scan, or a spoken description. From it, get:

@@ -25,6 +25,17 @@ Room planners make it easy to drag a sofa around a perfect rectangle. Real flats
 
 The steps are written as agent skills in `.claude/skills/` (`survey`, `layout`, `present`). Claude Code loads them automatically. Codex reads `AGENTS.md`, which points to the same files.
 
+## Install
+
+As a Claude Code plugin (skills only; the first time you use them, the agent sets up a workspace with the tools):
+
+```
+/plugin marketplace add khdoex/flat-planner
+/plugin install flat-planner@flat-planner
+```
+
+Or clone the repo. Claude Code then loads the skills from `.claude/skills/` automatically, and Codex reads `AGENTS.md`.
+
 ## Quick start
 
 ```bash

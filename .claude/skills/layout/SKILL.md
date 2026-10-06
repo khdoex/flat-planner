@@ -7,6 +7,16 @@ description: Arrange furniture in a surveyed flat and compare arrangements by ha
 
 Furniture lives in `data/layout.json` and in named alternatives in `data/layouts/<name>.json`. The item format is in `docs/format.md`. The user may have the planner open (`npm run dev`) and be dragging things while you work. Their edits are written to disk within about 0.3 s, so **re-read a layout file right before you edit it**, and change only the items you mean to change.
 
+## Setup
+
+The commands below run inside a flat-planner workspace: a folder with `scripts/survey.ts` in it. If the current folder is not one (for example, when this skill came from the plugin), ask the user where to put it, then:
+
+```bash
+git clone https://github.com/khdoex/flat-planner.git <folder> && cd <folder> && npm install
+```
+
+Work from that folder from then on. Snapshots also need a Playwright Chromium (`npx playwright install chromium`).
+
 ## Loop
 
 1. **Look first.** Run `npm run check` and `npm run snap -- --view top --room <room> --crop`, and read the image.
