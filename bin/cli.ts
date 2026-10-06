@@ -25,17 +25,24 @@ const HELP = `flat-planner <command>   (run it in the folder that holds your pla
 Your plan lives in ./data (or $PLANNER_DATA). File format: https://github.com/khdoex/flat-planner/blob/main/.claude/skills/survey/format.md`;
 
 const [cmd, ...args] = process.argv.slice(2), home = process.cwd();
-switch (cmd) {
-  case 'init': console.log(initData(home) ? `created ${join(home, 'data')} from the demo flat` : 'a plan already exists here; nothing to do'); break;
-  case 'setup': { // use the Playwright this package depends on, so the browser build matches
-    const cli = join(dirname(createRequire(import.meta.url).resolve('playwright/package.json')), 'cli.js');
-    process.exitCode = spawnSync(process.execPath, [cli, 'install', 'chromium-headless-shell'], { stdio: 'inherit' }).status ?? 1;
-    break;
+try {
+  switch (cmd) {
+    case 'init': console.log(initData(home) ? `created ${join(home, 'data')} from the demo flat` : 'a plan already exists here; nothing to do'); break;
+    case 'setup': { // use the Playwright this package depends on, so the browser build matches
+      const cli = join(dirname(createRequire(import.meta.url).resolve('playwright/package.json')), 'cli.js');
+      // Playwright warns about npx whenever its own path contains "_npx"; present it as a plain "playwright" call
+      const code = `process.argv = [process.argv[0], 'playwright', 'install', 'chromium-headless-shell']; require(${JSON.stringify(cli)});`;
+      process.exitCode = spawnSync(process.execPath, ['-e', code], { stdio: 'inherit' }).status ?? 1;
+      break;
+    }
+    case 'dev': await dev(args, home); break;
+    case 'survey': survey(home); break;
+    case 'check': check(args, home); break;
+    case 'snap': await snap(args, home); break;
+    case 'optimise': case 'optimize': optimiseCmd(args, home); break;
+    default: console.log(HELP); if (cmd && cmd !== 'help' && cmd !== '--help') process.exitCode = 1;
   }
-  case 'dev': await dev(args, home); break;
-  case 'survey': survey(home); break;
-  case 'check': check(args, home); break;
-  case 'snap': await snap(args, home); break;
-  case 'optimise': case 'optimize': optimiseCmd(args, home); break;
-  default: console.log(HELP); if (cmd && cmd !== 'help' && cmd !== '--help') process.exitCode = 1;
+} catch (e) {
+  console.error(`flat-planner ${cmd}: ${(e as Error).message}`);
+  process.exitCode = 1;
 }

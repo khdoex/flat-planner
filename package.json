@@ -1,6 +1,6 @@
 {
   "name": "flat-planner",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Plan furniture in your real flat with an AI agent: sketch, photos and tape become a measured 3D model; layouts are checked against walkway, door-swing and clearance rules.",
   "keywords": [
     "floor-plan",

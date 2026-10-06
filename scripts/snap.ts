@@ -2,7 +2,8 @@
 // Starts its own server, renders the page in headless Chromium (SwiftShader WebGL), saves a PNG to snapshots/.
 import { createServer } from 'vite';
 import { chromium } from 'playwright';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, existsSync } from 'node:fs';
+import { realPath, dataDirOf } from '../shared/paths';
 import { resolve } from 'node:path';
 import { plannerPlugin } from '../server/plugin';
 import { viteConfig } from './dev';
@@ -17,6 +18,7 @@ export async function snap(args: string[], home: string) {
     },
   });
   if (!['3d', 'top'].includes(a.view!)) throw new Error('--view must be 3d or top');
+  if (a.layout && !existsSync(realPath(home, a.layout) ?? '')) throw new Error(`no layout file ${a.layout} in ${dataDirOf(home)}`);
 
   const server = await createServer({ ...viteConfig(plannerPlugin(home)), logLevel: 'error', server: { port: 5199, strictPort: false } });
   await server.listen();
